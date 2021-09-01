@@ -1,12 +1,15 @@
 var highScoresCounter = 0;
+var startTime = 60;
+var counterTimer = 0;
 var timer = document.getElementById("timer");
+
 
 // Get a reference to the start button
 var btnStart = document.getElementsByClassName("btn-start")[0];
-
 var h1 = document.getElementById("h1");
-
 var instructions = document.getElementById("instructions");
+
+document.getElementById("timer").innerHTML = startTime;
 
 function init() {
   highScores();
@@ -18,6 +21,7 @@ btnStart.addEventListener("click", function () {
   // Set the text for our question
   h1.innerText = "Question:";
   instructions.remove();
+  setInterval(myTimer, 1000);
   // remove the start button
   btnStart.remove();
 });
@@ -44,6 +48,7 @@ var questionsData = [
     options: ["flex or inline flex", "flex", "inline-flex", "box"],
     correctIndex: 0,
   },
+  
 ];
 // variables for questions being set up
 const questionsDisplayed = document.querySelector("#questions");
@@ -76,7 +81,9 @@ function renderQuestion() {
     button.textContent = option;
     //add the button to the options p
     optionsDisplayed.append(button);
+
   }
+ 
 }
 optionsDisplayed.addEventListener("click", function (e) {
   const element = e.target;
@@ -95,7 +102,12 @@ optionsDisplayed.addEventListener("click", function (e) {
   }
   //increase our question index
   answerIndex++;
+  if(answerIndex == questionsData.length) {
+    
+endGame();
+  }
   renderQuestion();
+ 
 });
 
 // need to write a function to grab timer as high score and record it.
@@ -103,25 +115,25 @@ optionsDisplayed.addEventListener("click", function (e) {
 function endGame() {
  questionsDisplayed.remove();
  optionsDisplayed.remove();
-
- highScores ();
- endGame();
+alert(`Completed!`);
+h1.innerText = "High Scores:";
+myStopFunction();
 }
 
-// Timer
-var startTime = 60;
-var myVar = setInterval(myTimer, 1000);
 
+// Timer
 function myTimer() {
   startTime = startTime - 1;
   document.getElementById("timer").innerHTML = startTime;
   if (startTime === 0) {
+    alert(`Out of Time!`)
     myStopFunction();
+  
   }
 }
 
 function myStopFunction() {
-  clearInterval(myVar);
+  clearInterval(counterTimer);
 }
 //
 
